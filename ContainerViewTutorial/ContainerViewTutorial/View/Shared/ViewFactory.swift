@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 enum ViewFactory {
 
@@ -12,8 +13,18 @@ enum ViewFactory {
             [
                 .loading: LoadingView().erased,
                 .results: NavigationLazyView(ContentResultsView()).erased,
-                .error: NavigationLazyView(ErrorView()).erased
+                .error: NavigationLazyView(ErrorView()).erased,
             ]
         }
     }
 }
+
+//private struct LittlePotatoView: View {
+//
+//    var body: some View {
+//        ZStack {
+//            Color.pink
+//            Text("YAY 😁 ... This is the little potato view.🥔")
+//        }
+//    }
+//}

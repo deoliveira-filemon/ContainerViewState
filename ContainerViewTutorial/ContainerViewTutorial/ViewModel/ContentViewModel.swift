@@ -1,10 +1,3 @@
-//
-//  ContentViewModel.swift
-//  ContainerViewTutorial
-//
-//  Created by Filemon Oliveira on 03/02/2021.
-//
-
 import Combine
 import Foundation
 
@@ -50,15 +43,17 @@ final class ContentViewModel: ContentViewModelRepresentable & ErrorViewModel {
         viewLifecycle
             .eraseToAnyPublisher()
             .onLoad { [weak self] in
+                guard let self = self else { return }
+
                 // Load your data and update the view state on result
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     // First load got an error 🚨
-                    self?.viewStatePublisher = .error
+                    self.viewStatePublisher = .error
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
                     // but the retry worked 👏🏻
-                    self?.viewStatePublisher = .results
+                    self.viewStatePublisher = .results
                 }
             }
             .store(in: &cancellables)
@@ -80,6 +75,9 @@ final class ContentViewModel: ContentViewModelRepresentable & ErrorViewModel {
         case .results:
             print("Load .results accessibility")
             return .contentViewResults
+//        case .littlePotato:
+//            print("Load .littlePotato accessibility")
+//            return .contentLittlePotato
         }
     }
 }

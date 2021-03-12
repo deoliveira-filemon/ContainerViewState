@@ -22,10 +22,10 @@ struct ContainerView<ViewModel: ContainerViewModel>: ViewModelView {
         if viewModel.isReload {
             viewModel.load()
 
-            // NOTE: Do not change the code order.
+            // NOTE: 🚨 Do not change the order.
             //
-            // IMPORTANT: We need to call `setUpBindings` first to call the `setUpBindings` before sending `.onLoad`,
-            // otherwise the VM will not be notified.
+            // IMPORTANT: We need to call `setUpBindings` first to trigger `setUpBindings` on VM before sending
+            // `.onLoad` to the view lifecycle, otherwise the VM will not be notified.
             // Therefore, the method `setUpBindings()` inside the VM will be called before the `.onLoad()`
             // lifecycle event trigger.
             setUpBindings()
@@ -97,6 +97,12 @@ extension ContainerView {
                             self.currentContent = view
 
                             viewModel.childAccessibility(for: key) ?|> {
+                                // FIXME: Ideally, we only need to set the acessibility once.
+                                // This is not hapenning today because this method will be called every time that the
+                                // viewState gets updated.
+                                // It is not a big issue but it is an issue, right? 😔
+                                // Maybe, we could move this to outside of the viewState listener and call it at
+                                // Container init.
                                 self.currentContent.accessibility(identifier: $0.identifier)
                             }
                         }

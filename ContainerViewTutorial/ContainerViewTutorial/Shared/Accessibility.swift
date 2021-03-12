@@ -8,6 +8,7 @@ enum Accessibility: String {
     case contentViewLoading = "content_view_loading"
     case contentViewError = "content_view_error"
     case contentViewResults = "content_view_results"
+    case contentLittlePotato = "content_little_potato"
 }
 
 // MARK: - Identifier
