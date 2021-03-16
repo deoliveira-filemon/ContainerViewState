@@ -32,8 +32,13 @@ final class ContentViewModel: ContentViewModelRepresentable & ErrorViewModel {
     var error: Published<AppError>.Publisher { $errorPublisher }
 
     private var cancellables = Set<AnyCancellable>()
+//    🙏🏻 We can use generic scheduler to inject a custom scheduler for our network layer for example.
+//    So we can control what scheduler is used in classes, functions, etc.
+//    https://github.com/pointfreeco/combine-schedulers/blob/main/Sources/CombineSchedulers/AnyScheduler.swift
+//    private let scheduler: AnySchedulerOf<DispatchQueue>
     
-    init() {
+    init(/*scheduler: AnySchedulerOf<DispatchQueue> = DispatchQueue.main.eraseToAnyScheduler()*/) {
+//        self.scheduler = scheduler
         self.viewLifecycle = PassthroughSubject<ViewLifecycleState, Never>()
     }
 
@@ -42,6 +47,8 @@ final class ContentViewModel: ContentViewModelRepresentable & ErrorViewModel {
 
         viewLifecycle
             .eraseToAnyPublisher()
+//            Apply the scheduler
+//            .receive(on: scheduler)
             .onLoad { [weak self] in
                 guard let self = self else { return }
 
